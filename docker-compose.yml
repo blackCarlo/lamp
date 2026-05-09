@@ -1,0 +1,22 @@
+version: "2.3"
+
+services:
+  lamp:
+    build: .
+    image: lamp:20260509
+    container_name: lamp-php56
+    ports:
+      - "8080:80"
+      - "${MYSQL_HOST_PORT:-33060}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-lamp}
+      MYSQL_USER: ${MYSQL_USER:-lamp}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-lamp}
+    volumes:
+      - ./www:/var/www/html
+      - lamp_mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  lamp_mysql_data:
